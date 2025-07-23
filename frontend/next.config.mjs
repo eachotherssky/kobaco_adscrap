@@ -7,8 +7,8 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   output: 'export',
-  basePath: '/',
-  assetPrefix: '/',
+  basePath: '/kobaco_adscrap',
+  assetPrefix: '/kobaco_adscrap/',
   images: {
     unoptimized: true,
   },
