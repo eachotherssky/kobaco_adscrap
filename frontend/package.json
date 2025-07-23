@@ -4,11 +4,10 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
-    "lint": "next lint",
-    "start": "next start",
-    "deploy": "pnpm run build && gh-pages -d out"
+    "postbuild": "node scripts/fix-path.cjs",
+    "deploy": "pnpm run build && gh-pages -d out -x"
   },
+
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "1.2.2",
@@ -65,7 +64,8 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "gh-pages": "^6.3.0",
+    "gh-pages": "^6",
+    "shx": "^0.3",
     "postcss": "^8.5",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"

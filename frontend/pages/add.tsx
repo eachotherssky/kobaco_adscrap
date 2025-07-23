@@ -8,7 +8,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { LiquidGlassInput, LiquidGlassTextarea } from "@/components/ui/liquid-glass-input"
 import { LiquidGlassButton } from "@/components/ui/liquid-glass-button"
-import { GlassNavigation } from "../../components/ui/glass-navigation"
+import { GlassNavigation } from "../components/ui/glass-navigation"
 
 export default function AddAdPage() {
   const router = useRouter()
