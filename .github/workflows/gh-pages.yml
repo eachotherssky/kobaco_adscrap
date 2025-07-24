@@ -1,0 +1,26 @@
+name: deploy-pages
+on:
+  push:
+    branches: [main]      # 배포를 트리거할 브랜치
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run build          # dist 폴더 생성
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages           # 배포 대상 브랜치
+          folder: dist               # 배포할 폴더
+          clean: true
