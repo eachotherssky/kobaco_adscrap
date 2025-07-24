@@ -5,38 +5,36 @@ on:
     branches: [main]
 
 permissions:
-  contents: write          # gh-pages 브랜치에 푸시할 권한
+  contents: write            # gh-pages 브랜치 푸시 권한
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      # 1) 소스 체크아웃
       - uses: actions/checkout@v4
 
-      # 2) Node 설치 (pnpm 캐시 옵션 **삭제**)
+      # 1) Node 먼저
       - uses: actions/setup-node@v4
         with:
-          node-version: 20           # 프로젝트가 쓰는 버전
+          node-version: 20
 
-      # 3) pnpm 설치
-      - uses: pnpm/action-setup@v4   # ← 반드시 Node 다음
+      # 2) pnpm 설치
+      - uses: pnpm/action-setup@v4       # ← v4 필수
         with:
-          version: 8                 # 로컬과 동일 버전
+          version: 8                     # 로컬과 동일 버전
 
-      # 4) 의존성 설치
+      # 3) 의존성 설치
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # 5) 빌드
+      # 4) 빌드
       - name: Build
-        run: pnpm run build          # dist 폴더 생성
+        run: pnpm run build              # dist 폴더 생성
 
-      # 6) GitHub Pages 배포
+      # 5) GitHub Pages 배포
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist               # vite outDir과 동일
+          folder: dist                   # vite outDir 과 동일
           clean: true
