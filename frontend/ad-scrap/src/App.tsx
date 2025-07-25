@@ -1,35 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.tsx
+import { Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+// import NewPost from './pages/NewPost';
+import AuthButtons from './components/AuthButtons';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>firebase check</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      <header className="flex items-center justify-between px-4 py-3 border-b">
+        <h1 className="text-xl font-bold">Ad-Scrap</h1>
+        <AuthButtons />
+      </header>
 
-export default App
+      <main className="mx-auto w-full max-w-3xl p-4">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          {/* <Route path="/new" element={<NewPost />} /> */}
+        </Routes>
+      </main>
+    </>
+  );
+}

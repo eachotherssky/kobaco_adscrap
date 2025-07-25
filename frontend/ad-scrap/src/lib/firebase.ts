@@ -11,16 +11,20 @@ import {
   query,
   orderBy,
   onSnapshot,
+  type DocumentData,
 } from 'firebase/firestore';
 import {
   getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  User,
+  type User,
 } from 'firebase/auth';
 
+/* ──────────────────────────
+   1. Firebase App 초기화
+   ────────────────────────── */
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FB_API_KEY,
   authDomain: import.meta.env.VITE_FB_AUTH_DOMAIN,
@@ -28,25 +32,38 @@ const firebaseConfig = {
   storageBucket: import.meta.env.VITE_FB_STORAGE_BUCKET,
 };
 
-const app = initializeApp(firebaseConfig);
+export const firebaseApp = initializeApp(firebaseConfig);
 
-/* ------------------- 서비스 핸들 ------------------- */
-export const db = getFirestore(app);
-export const auth = getAuth(app);
-export const googleProvider = new GoogleAuthProvider();
+/* ──────────────────────────
+   2. 서비스 핸들
+   ────────────────────────── */
+export const db   = getFirestore(firebaseApp);
+export const auth = getAuth(firebaseApp);
 
-/* ------------------- Auth 래퍼 ------------------- */
-export const login = () => signInWithPopup(auth, googleProvider);
+/* ──────────────────────────
+   3. Auth 래퍼
+   ────────────────────────── */
+export const emailSignUp = (email: string, pw: string) =>
+  createUserWithEmailAndPassword(auth, email, pw);
+
+export const emailSignIn = (email: string, pw: string) =>
+  signInWithEmailAndPassword(auth, email, pw);
+
 export const logout = () => signOut(auth);
+
 export const onUserChanged = (cb: (user: User | null) => void) =>
   onAuthStateChanged(auth, cb);
 
-/* ------------------- CRUD 헬퍼 ------------------- */
-export const addPost = async (data: { title: string; url: string }) => {
+/* ──────────────────────────
+   4. CRUD 헬퍼 (posts 컬렉션)
+   ────────────────────────── */
+type PostPayload = { title: string; url: string };
+
+export const addPost = async (data: PostPayload) => {
   if (!auth.currentUser) throw new Error('Unauthenticated');
   return addDoc(collection(db, 'posts'), {
     ...data,
-    author: auth.currentUser.displayName ?? '익명',
+    author:    auth.currentUser.email ?? '익명',
     authorUid: auth.currentUser.uid,
     createdAt: serverTimestamp(),
   });
@@ -54,7 +71,7 @@ export const addPost = async (data: { title: string; url: string }) => {
 
 export const updatePost = async (
   id: string,
-  data: { title?: string; url?: string },
+  data: Partial<PostPayload>,
 ) => {
   if (!auth.currentUser) throw new Error('Unauthenticated');
   return updateDoc(doc(db, 'posts', id), {
@@ -68,9 +85,11 @@ export const deletePost = async (id: string) => {
   return deleteDoc(doc(db, 'posts', id));
 };
 
-/* ------------------- 실시간 조회 ------------------- */
+/* ──────────────────────────
+   5. 실시간 구독
+   ────────────────────────── */
 export const listenPosts = (
-  cb: (posts: Array<Record<string, unknown>>) => void,
+  cb: (posts: DocumentData[]) => void,
 ) => {
   const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'));
   return onSnapshot(q, snap =>
