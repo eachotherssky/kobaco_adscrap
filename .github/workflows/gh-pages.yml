@@ -2,39 +2,46 @@ name: deploy-pages
 
 on:
   push:
-    branches: [main]
+    branches: [main]            # main 브랜치 푸시 때마다 실행
 
 permissions:
-  contents: write                # gh-pages 푸시 권한
+  contents: write              # gh-pages 브랜치에 푸시할 권한 부여
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
 
-    defaults:                    # ↓ 모든 run 스텝에 기본 적용
+    # 모든 run 스텝이 서브폴더에서 실행되도록 지정
+    defaults:
       run:
         working-directory: frontend/ad-scrap
 
     steps:
+      # 1) 소스 체크아웃
       - uses: actions/checkout@v4
 
+      # 2) Node 설치
       - uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      # 3) pnpm 10 설치
       - uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 10.13.1
 
-      - name: Install
+      # 4) 의존성 설치 (lockfile 검사 유지)
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # 5) 빌드 (Vite → dist 폴더 생성)
       - name: Build
-        run: pnpm run build      # dist 생성
+        run: pnpm run build
 
-      - name: Deploy
+      # 6) GitHub Pages 배포
+      - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
-          folder: frontend/ad-scrap/dist   # ← 빌드 결과 경로
-          clean: true
+          branch: gh-pages                    # 배포 브랜치
+          folder: frontend/ad-scrap/dist      # 빌드 산출물 경로
+          clean: true                         # 이전 파일 모두 제거
