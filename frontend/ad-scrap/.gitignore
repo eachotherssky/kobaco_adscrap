@@ -7,12 +7,25 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies & build
 node_modules
 dist
 dist-ssr
 *.local
+coverage
+turbo
+.turbo
 
-# Editor directories and files
+# Env
+.env
+.env.*
+!.env.example
+
+# Firebase
+.firebase/
+firebase-debug.log*
+
+# Editor dirs/files
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -22,3 +35,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+Thumbs.db
