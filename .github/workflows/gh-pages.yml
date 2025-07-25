@@ -16,6 +16,12 @@ jobs:
       run:
         working-directory: frontend/ad-scrap
 
+    env:                           #  ← 추가
+      VITE_FB_API_KEY:        ${{ secrets.VITE_FB_API_KEY }}
+      VITE_FB_AUTH_DOMAIN:    ${{ secrets.VITE_FB_AUTH_DOMAIN }}
+      VITE_FB_PROJECT_ID:     ${{ secrets.VITE_FB_PROJECT_ID }}
+      VITE_FB_STORAGE_BUCKET: ${{ secrets.VITE_FB_STORAGE_BUCKET }}
+
     steps:
       # 1) 소스 체크아웃
       - uses: actions/checkout@v4
