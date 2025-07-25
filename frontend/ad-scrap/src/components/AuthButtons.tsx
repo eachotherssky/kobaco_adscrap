@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth, emailSignIn, emailSignUp, logout } from '@/hooks/useAuth';
+import { useAuth, emailSignIn, emailSignUp, logout } from '../hooks/useAuth';
 
 export default function AuthButtons() {
   const user = useAuth();

@@ -5,7 +5,7 @@ import {
   addDoc,
   serverTimestamp,
 } from 'firebase/firestore';
-import { useAuth } from '@/hooks/useAuth'; // 로그인 상태 훅 (이미 작성된 것으로 가정)
+import { useAuth } from '../hooks/useAuth'; // 로그인 상태 훅 (이미 작성된 것으로 가정)
 
 const db = getFirestore();
 

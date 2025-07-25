@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { collection, getDocs, type DocumentData } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '../lib/firebase';
 
 export default function HomePage() {
   const [posts, setPosts] = useState<DocumentData[]>([]);
