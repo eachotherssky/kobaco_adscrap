@@ -5,7 +5,7 @@ import {
   getDocs,
   type DocumentData,
 } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '../lib/firebase';
 
 export default function HomePage() {
   const [posts, setPosts] = useState<DocumentData[] | null>(null); // null = 로딩
