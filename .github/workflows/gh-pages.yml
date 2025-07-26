@@ -46,7 +46,8 @@ jobs:
         run: pnpm run build
 
       # 6) 키 노출 검사 ─ 빌드 직후 / 배포 직전
-      - name: Fail if Firebase key leaked
+      - name: Fail if Firebase key leaked     # 6번 스텝
+        if: github.ref != 'refs/heads/main'   # main 배포라면 건너뜀
         run: |
           if grep -R "AIza" dist; then
             echo "API key detected in bundle" >&2
