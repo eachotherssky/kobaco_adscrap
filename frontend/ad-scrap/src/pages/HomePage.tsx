@@ -13,15 +13,11 @@ export default function HomePage() {
   }, []);
 
   return (
-    <section>
+    <section className="p-4">
       <h2 className="mb-4 text-xl font-semibold">최근 등록된 광고</h2>
-
       <ul className="space-y-2">
         {posts.map(post => (
-          <li
-            key={post.id}
-            className="rounded border p-3 hover:bg-muted/60 transition-colors"
-          >
+          <li key={post.id} className="rounded border p-3">
             <a
               href={post.url}
               target="_blank"
@@ -30,16 +26,13 @@ export default function HomePage() {
             >
               {post.title}
             </a>
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="mt-1 text-xs text-gray-500">
               작성자: {post.author ?? '알 수 없음'}
             </p>
           </li>
         ))}
-
         {posts.length === 0 && (
-          <li className="text-sm text-muted-foreground">
-            아직 게시물이 없습니다.
-          </li>
+          <li className="text-sm text-gray-500">아직 게시물이 없습니다.</li>
         )}
       </ul>
     </section>

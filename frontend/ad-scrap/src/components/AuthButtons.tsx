@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useAuth, emailSignIn, emailSignUp, logout } from '../hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
+import { emailSignIn, emailSignUp, logout } from '../lib/firebase';
 
 export default function AuthButtons() {
   const user = useAuth();
@@ -28,16 +29,10 @@ export default function AuthButtons() {
         value={pw}
         onChange={e => setPw(e.target.value)}
       />
-      <button
-        onClick={() => emailSignIn(email, pw)}
-        className="text-sm underline"
-      >
+      <button onClick={() => emailSignIn(email, pw)} className="text-sm underline">
         로그인
       </button>
-      <button
-        onClick={() => emailSignUp(email, pw)}
-        className="text-sm underline"
-      >
+      <button onClick={() => emailSignUp(email, pw)} className="text-sm underline">
         가입
       </button>
     </div>

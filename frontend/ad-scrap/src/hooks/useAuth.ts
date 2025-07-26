@@ -1,27 +1,18 @@
+/**
+ * 로그인 상태 전역 훅
+ * - 마운트 시 onAuthStateChanged 구독 → user 상태 갱신
+ * - 필요한 곳에서 `const user = useAuth();` 로 간단히 사용
+ */
+
 import { useEffect, useState } from 'react';
-import {
-  getAuth,
-  onAuthStateChanged,
-  type User,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-} from 'firebase/auth';
+import { auth, onUserChanged } from '../lib/firebase';
+import type { User } from 'firebase/auth';
 
-const auth = getAuth();
-
-/* 사용자 상태 실시간 구독 */
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
-  useEffect(() => onAuthStateChanged(auth, setUser), []);
-  return user;
+
+  // 컴포넌트 최초 마운트 때만 구독
+  useEffect(() => onUserChanged(setUser), []);
+
+  return user;   // - null 이면 미로그인 상태
 }
-
-/* 이메일 회원가입 - 로그인 헬퍼 */
-export const emailSignUp = (email: string, pw: string) =>
-  createUserWithEmailAndPassword(auth, email, pw);
-
-export const emailSignIn = (email: string, pw: string) =>
-  signInWithEmailAndPassword(auth, email, pw);
-
-export const logout = () => signOut(auth);
