@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { auth, onUserChanged } from '../lib/firebase';
+import { onUserChanged } from '../lib/firebase';
 import type { User } from 'firebase/auth';
 
 export function useAuth() {
