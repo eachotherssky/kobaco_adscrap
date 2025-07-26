@@ -45,7 +45,15 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      # 6) GitHub Pages 배포
+      # 6) 키 노출 검사 ─ 빌드 직후 / 배포 직전
+      - name: Fail if Firebase key leaked
+        run: |
+          if grep -R "AIza" dist; then
+            echo "API key detected in bundle" >&2
+            exit 1
+          fi
+
+      # 7) GitHub Pages 배포
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
