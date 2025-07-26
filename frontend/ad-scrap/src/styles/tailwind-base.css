@@ -1,0 +1,9 @@
+/* # @tailwind base/components/utilities + reset */
+
+/* Tailwind 레이어 + 최소 reset */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; }
+
